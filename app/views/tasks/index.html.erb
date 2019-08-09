@@ -1,0 +1,17 @@
+<h1>タスク一覧</h1>
+<p><%= notice %></p>
+<table>
+    <tr>
+        <th>タイトル</th>
+        <th>内容</th>
+    </tr>
+    <% @tasks.each do |t| %>
+    <tr>
+        <td><%= t.title %></td>
+        <td><%= t.content %></td>
+        <td><%= link_to '詳細を見る', task_path(t.id) %></td>
+        <td><%= link_to "編集する", edit_task_path(t.id) %></td>
+        <td><%= link_to '削除する', task_path(t.id), method: :delete ,data: { confirm: '本当に削除していいですか？' } %></td>
+    <% end %>
+    </tr>
+</table>
