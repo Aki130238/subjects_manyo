@@ -1,19 +1,20 @@
 # テーブル
 ## User
-立場：position
-名前：name
-外部キー：task_id
+| 立場 | position |
+| 名前 | name |
+| 外部キー | task_id |
 ## Task
-終了期限：expiration_date
-優先順位：priority
-ステータス：status
-説明文：content
-外部キー：label_id
+| 終了期限 | expiration_date |
+| 優先順位 | priority |
+| ステータス | status |
+| 説明文 | content |
+| 外部キー | label_id |
 ## Label
-ラベル名：label_name
-外部キー：task_id
+| ラベル名 | label_name |
+| 外部キー | task_id |
 
 # スキーマ
+```ruby schema.rb
   enable_extension "plpgsql"
 
   create_table "labels", force: :cascade do |t|
@@ -44,3 +45,4 @@
   end
 
   add_foreign_key "tasks", "users"
+  ```
