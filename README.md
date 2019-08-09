@@ -1,15 +1,21 @@
 # テーブル
 ## User
+| 属性 | カラム名 |
+----|---- 
 | 立場 | position |
 | 名前 | name |
 | 外部キー | task_id |
 ## Task
+| 属性 | カラム名 |
+----|---- 
 | 終了期限 | expiration_date |
 | 優先順位 | priority |
 | ステータス | status |
 | 説明文 | content |
 | 外部キー | label_id |
 ## Label
+| 属性 | カラム名 |
+----|---- 
 | ラベル名 | label_name |
 | 外部キー | task_id |
 
