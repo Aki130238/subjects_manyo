@@ -41,6 +41,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot_rails'
   gem 'spring-commands-rspec'
+  gem 'launchy'
 end
 
 group :development do
@@ -61,6 +62,7 @@ group :test do
   gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'webdrivers'
+  gem 'launchy'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

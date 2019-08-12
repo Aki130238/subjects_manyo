@@ -15,10 +15,12 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
   scenario 'タスク登録画面で、必要項目を入力してcreateボタンを押したらデータが保存される' do
     visit new_task_path
-    Task.create!(title: 'test_task_05', content: 'testtesttest05', id: '5')
-    
+    fill_in 'Title', with: 'test_task_05'
+    fill_in 'Content', with: 'testtesttest05'
     click_button 'Create Task'
-    visit task_path(id: '5')
+    task = Task.last
+    visit task_path(task.id)
+    #visit tasks_path
     expect(page).to have_content 'test_task_05'
     expect(page).to have_content 'testtesttest05'
   end
