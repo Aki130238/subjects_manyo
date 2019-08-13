@@ -5,5 +5,5 @@
     <%= form.label :content %>
     <%= form.text_field :content %>
     <%= form.submit %>
+    <%= link_to (button_tag "戻る", type: 'button'), { controller: :tasks, action: :index } %>
 <% end %>
-<%= link_to"戻る", tasks_path %>
