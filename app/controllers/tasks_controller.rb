@@ -11,8 +11,11 @@ class TasksController < ApplicationController
 
     def create
         @task = Task.new(params_task)
-        @task.save
-        redirect_to tasks_path, notice: "タスクを作成しました！"
+        if @task.save
+           redirect_to tasks_path, notice: "タスクを作成しました！"
+        else
+            render :new, notice: "タスクを作成に失敗しました"
+        end
     end
 
     def show
