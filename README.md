@@ -1,3 +1,22 @@
+# Herokuデプロイ
+## 手順
+### 準備する
+アプリケーションフォルダで git init する
+railsコンソールで heroku login する
+
+$ heroku create アプリ名
+$ git add .
+$ git commit -m "変更内容を記述"
+
+## デプロイする
+$ git push heroku master
+$ heroku run rails db:migate
+
+## 確認する
+$ heroku config
+
+---
+
 # ER図
 ![alt](/docs/er.png)
 
