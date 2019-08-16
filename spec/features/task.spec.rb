@@ -33,7 +33,6 @@ RSpec.feature "タスク管理機能", type: :feature do
 
   scenario '任意のタスク詳細画面に遷移したら、該当タスクの内容が表示されたページに遷移する' do
     Task.create!(title: 'test_task_06', content: 'testtesttest06', id: '6', expiration_out: '2019-08-16 12:00:00')
-    task = Task.new(title: 'test_task_06', content: 'testtesttest06', id: '6', expiration_out: '2019-08-16 12:00:00')
     visit task_path(id: '6')
     expect(page).to have_content 'test_task_06'
     expect(page).to have_content 'testtesttest06'
@@ -56,11 +55,8 @@ RSpec.feature "タスク管理機能", type: :feature do
     Task.create!(title: '終了期限テスト3', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
     visit tasks_path
     click_link '終了期限でソートする'
+    expect(page).to have_text /.+終了期限テスト1.+終了期限テスト2.+終了期限テスト3/
     #save_and_open_page
-    within '.items' do
-      #item_expirations = all('.item-expiration').map(&:text)
-      #expect(item_expirations).to eq %w(終了期限テスト1 終了期限テスト2 終了期限テスト3)
-      expect(page).to have_text /.+終了期限テスト1.+終了期限テスト2.+終了期限テスト3/
     end
   end
 end
