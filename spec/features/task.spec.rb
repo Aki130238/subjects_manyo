@@ -60,7 +60,7 @@ RSpec.feature "タスク管理機能", type: :feature do
     within '.items' do
       #item_expirations = all('.item-expiration').map(&:text)
       #expect(item_expirations).to eq %w(終了期限テスト1 終了期限テスト2 終了期限テスト3)
-      expect(page).to have_text /.+終了期限テスト1.+終了期限テスト2.+終了期限テスト/
+      expect(page).to have_text /.+終了期限テスト1.+終了期限テスト2.+終了期限テスト3/
     end
   end
 end
