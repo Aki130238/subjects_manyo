@@ -14,6 +14,8 @@
     <%= form.text_field :title %>
     <%= form.label :content %>
     <%= form.text_field :content %>
+    <%= form.label :expiration_out %>
+    <%= form.text_field :expiration_out %>
     <%= form.submit %>
     <%= link_to (button_tag "戻る", type: 'button'), { controller: :tasks, action: :index } %>
 <% end %>
