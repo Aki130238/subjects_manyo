@@ -4,6 +4,7 @@ RSpec.feature "タスク管理機能", type: :feature do
   background do
     FactoryBot.create(:task)
     FactoryBot.create(:second_task)
+    FactoryBot.create(:third_task)
   end
   
   scenario 'タスク一覧画面に遷移したら、作成済みのタスクが表示される' do
@@ -58,5 +59,12 @@ RSpec.feature "タスク管理機能", type: :feature do
     expect(page).to have_text /.+終了期限テスト1.+終了期限テスト2.+終了期限テスト3/
     #save_and_open_page
     end
+
+  scenario 'タイトル検索で任意の文字が含まれるタスクだけ表示される' do
+    visit tasks_path
+    fill_in 'title-search', with: 'タイトル２'
+    #save_and_open_page
+    click_button '絞り込み検索'
+    expect(page).to_not have_text /.+タイトル３.+タイトル１.+/
   end
 end
