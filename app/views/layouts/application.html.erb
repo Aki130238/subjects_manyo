@@ -8,8 +8,32 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+  
   <body>
+    <head>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#gnavi">
+              <span class="sr-only">Bootstrap</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">タスク管理</a>
+          </div>
+          <div id="gnavi" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li><%= link_to"トップ", tasks_path %></li>
+              <li><%= link_to"登録する", new_task_path %></li>
+              <li><%= link_to (button_tag "優先順位でソートする", type: 'button'), tasks_path(sort_priority: "true") %></li>
+              <li><%= link_to (button_tag "終了期限でソートする", type: 'button'), tasks_path(sort_expired: "true") %></li>
+              
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </head>
     <%= yield %>
   </body>
 </html>
