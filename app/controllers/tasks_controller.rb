@@ -2,11 +2,21 @@ class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
 
     def index
-        if params[:sort_expired]
-          @tasks = Task.all.order(expiration_out: "DESC")
+        
+        if params[:task] && params[:task][:search] && params[:task][:title] && params[:task][:status]
+          @tasks = Task.wheres(params[:task][:title], params[:task][:status])
+        elsif params[:task] && params[:task][:search] && params[:task][:title]
+          @tasks = Task.wheretitle(params[:task][:title])
+        elsif params[:task] && params[:task][:search] && params[:task][:status]
+          @tasks = Task.wherestatus(params[:task][:status])
+        elsif params[:sort_expired]
+          @tasks = Task.all.expsorted
+        elsif
+          @tasks = Task.all.sorted
         else
-          @tasks = Task.all.order(created_at: "DESC")
+          @tasks = Task.all
         end
+        
     end
 
     def new
@@ -16,9 +26,9 @@ class TasksController < ApplicationController
     def create
         @task = Task.new(params_task)
         if @task.save
-           redirect_to tasks_path, notice: "タスクを作成しました！"
+          redirect_to tasks_path, notice: "タスクを作成しました！"
         else
-            render :new, notice: "タスクを作成に失敗しました"
+          render :new, notice: "タスクを作成に失敗しました"
         end
     end
 
@@ -41,7 +51,7 @@ class TasksController < ApplicationController
     private
 
     def params_task
-        params.require(:task).permit(:title, :content, :expiration_out)
+        params.require(:task).permit(:title, :content, :expiration_out, :status)
     end
 
     def set_task
