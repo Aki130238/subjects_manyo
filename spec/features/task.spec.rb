@@ -56,7 +56,7 @@ RSpec.feature "タスク管理機能", type: :feature do
     Task.create!(title: '終了期限テスト3', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
     visit tasks_path
     click_link '終了期限でソートする'
-    expect(page).to have_text /.+終了期限テスト1.+終了期限テスト2.+終了期限テスト3/
+    expect(page).to have_text /.*終了期限テスト1.*終了期限テスト2.*終了期限テスト3.*/
     #save_and_open_page
     end
 
@@ -74,7 +74,7 @@ RSpec.feature "タスク管理機能", type: :feature do
     Task.create!(title: 'テスト1',priority: '中', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
     visit tasks_path
     click_link '優先順位でソートする'
-    expect(page).to have_text /.+テスト2.+テスト1.+テスト3/
+    expect(page).to have_text /.*テスト2.*テスト1.*テスト3.*/
   end
 
 end
