@@ -67,4 +67,14 @@ RSpec.feature "タスク管理機能", type: :feature do
     click_button '絞り込み検索'
     expect(page).to_not have_text /.+タイトル３.+タイトル１.+/
   end
+
+  scenario '' do
+    Task.create!(title: 'テスト3',priority: '低', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15')
+    Task.create!(title: 'テスト2',priority: '高', content: 'shuryoukigenntitle1', expiration_out: DateTime.now)
+    Task.create!(title: 'テスト1',priority: '中', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
+    visit tasks_path
+    click_link '優先順位でソートする'
+    expect(page).to have_text /.+テスト2.+テスト1.+テスト3/
+  end
+
 end
