@@ -12,20 +12,23 @@
     <%= f.submit "絞り込み検索" %>
 
 <% end %>
+<%= link_to (button_tag "優先順位でソートする", type: 'button'), tasks_path(sort_priority: "true") %>
 <%= link_to (button_tag "終了期限でソートする", type: 'button'), tasks_path(sort_expired: "true") %>
 <table class="items">
     <tr>
         <th>タイトル</th>
-        <th>内容</th>
+        <th>優先順位</th>
         <th>終了期限</th>
         <th>ステータス</th>
+        <th>内容</th>
     </tr>
     <% @tasks.each do |t| %>
     <tr>
         <td><%= t.title %></td>
-        <td><%= t.content %></td>
+        <td><%= t.priority %></td>
         <td><%= t.expiration_out.strftime("%Y年%-m月%-d日") %></td>
         <td><%= t.status %></td>
+        <td><%= t.content %></td>
         <td><%= link_to '詳細を見る', task_path(t.id) %></td>
         <td><%= link_to "編集する", edit_task_path(t.id) %></td>
         <td><%= link_to '削除する', task_path(t.id), method: :delete ,data: { confirm: '本当に削除していいですか？' } %></td>

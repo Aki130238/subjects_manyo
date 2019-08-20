@@ -12,12 +12,14 @@
 <%= form_with(model: @task, local: true) do |form| %>
     <%= form.label :title %>
     <%= form.text_field :title %>
-    <%= form.label :content %>
-    <%= form.text_field :content %>
+    <%= form.label :priority %>
+    <%= form.select :priority, {高: "高", 中: "中", 低: "低"}, class: 'form-control', include_blank: true, selected: ''  %>
     <%= form.label :expiration_out %>
     <%= form.text_field :expiration_out %>
     <%= form.label :status %>
-    <%= form.select :status, {未着手: "未着手", 着手中: "着手中", 完了: "完了"} %>
+    <%= form.select :status, {未着手: "未着手", 着手中: "着手中", 完了: "完了"}, class: 'form-control', include_blank: true, selected: ''  %>
+    <%= form.label :content %>
+    <%= form.text_field :content %>
     <%= form.submit %>
     <%= link_to (button_tag "戻る", type: 'button'), { controller: :tasks, action: :index } %>
 <% end %>

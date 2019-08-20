@@ -11,6 +11,8 @@ class TasksController < ApplicationController
           @tasks = Task.wherestatus(params[:task][:status])
         elsif params[:sort_expired]
           @tasks = Task.all.expsorted
+        elsif params[:sort_priority]
+          @tasks = Task.all.priority_order(params[:direction])
         elsif
           @tasks = Task.all.sorted
         else
@@ -51,7 +53,7 @@ class TasksController < ApplicationController
     private
 
     def params_task
-        params.require(:task).permit(:title, :content, :expiration_out, :status)
+        params.require(:task).permit(:title, :content, :expiration_out, :status, :priority)
     end
 
     def set_task
