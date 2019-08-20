@@ -68,7 +68,7 @@ RSpec.feature "タスク管理機能", type: :feature do
     expect(page).to_not have_text /.+タイトル３.+タイトル１.+/
   end
 
-  scenario '' do
+  scenario '優先順位でソートしたら高中低の順に並ぶ' do
     Task.create!(title: 'テスト3',priority: '低', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15')
     Task.create!(title: 'テスト2',priority: '高', content: 'shuryoukigenntitle1', expiration_out: DateTime.now)
     Task.create!(title: 'テスト1',priority: '中', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
