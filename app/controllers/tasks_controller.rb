@@ -3,6 +3,7 @@ class TasksController < ApplicationController
     before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
 
     def index
+      if logged_in?
         if params[:task] && params[:task][:search] && params[:task][:title] && params[:task][:status]
           @tasks = Task.page(params[:page]).wheres(params[:task][:title], params[:task][:status])
         elsif params[:task] && params[:task][:search] && params[:task][:title]
@@ -18,7 +19,9 @@ class TasksController < ApplicationController
         else
           @tasks = Task.page(params[:page])
         end
-        
+      else
+        redirect_to new_session_path
+      end
     end
 
     def new
