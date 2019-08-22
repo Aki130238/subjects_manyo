@@ -10,6 +10,16 @@
   </head>
   
   <body>
+    <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
+    <% if logged_in? %>
+      <%= link_to "Profile", user_path(current_user.id) %>
+      <%= link_to "Logout", session_path(current_user.id), method: :delete %>
+    <% else %>
+      <%= link_to "Sign up", new_user_path %>
+      <%= link_to "Login", new_session_path %>
+    <% end %>
     <head>
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -26,9 +36,6 @@
             <ul class="nav navbar-nav">
               <li><%= link_to"トップ", tasks_path %></li>
               <li><%= link_to"登録する", new_task_path %></li>
-              <li><%= link_to (button_tag "優先順位でソートする", type: 'button'), tasks_path(sort_priority: "true") %></li>
-              <li><%= link_to (button_tag "終了期限でソートする", type: 'button'), tasks_path(sort_expired: "true") %></li>
-              
             </ul>
           </div>
         </div>

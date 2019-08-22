@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
+    before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
 
     def index
         if params[:task] && params[:task][:search] && params[:task][:title] && params[:task][:status]
@@ -26,6 +27,7 @@ class TasksController < ApplicationController
 
     def create
         @task = Task.new(params_task)
+        @task.user_id = current_user.id
         if @task.save
           redirect_to tasks_path, notice: "タスクを作成しました！"
         else
@@ -58,4 +60,12 @@ class TasksController < ApplicationController
     def set_task
         @task = Task.find(params[:id])
     end
+
+    def authenticate_user
+      unless current_user.id == @user.id
+        flash[:notice] = "ログインが必要"
+        redirect_to new_session_path, notice:"ログインが必要です"
+      end
+    end
+
 end
