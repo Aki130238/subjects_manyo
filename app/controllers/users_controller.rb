@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
-  before_action :new_user, only: [:new]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user, only: [:new, :show, :edit, :update, :destroy]
+  before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
 
   def index
     @users = User.all
@@ -9,6 +8,9 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    if logged_in?
+      redirect_to tasks_path
+    end
   end
 
   def create
