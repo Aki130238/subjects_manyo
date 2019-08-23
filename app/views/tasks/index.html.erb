@@ -1,6 +1,5 @@
 <div class="container">
   <div class="row">
-    <p><%= notice %></p>
     <%= form_with(model: Task.new, method: :get, url: tasks_path, local: true) do |f| %>
       <div class="form-group row">
         <%= f.label :title_search, "タイトル検索", class: 'col-sm-1 col-form-label' %>

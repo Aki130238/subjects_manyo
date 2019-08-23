@@ -14,10 +14,8 @@ class TasksController < ApplicationController
           @tasks = Task.page(params[:page]).expsorted
         elsif params[:sort_priority]
           @tasks = Task.page(params[:page]).priority_order(params[:direction])
-        elsif
-          @tasks = Task.page(params[:page]).sorted
         else
-          @tasks = Task.page(params[:page])
+          @tasks = current_user.tasks.page(params[:page]).sorted
         end
       else
         redirect_to new_session_path
@@ -65,7 +63,7 @@ class TasksController < ApplicationController
     end
 
     def authenticate_user
-      unless current_user.id == @user.id
+      unless current_user.id == @task.user_id
         flash[:notice] = "ログインが必要"
         redirect_to new_session_path, notice:"ログインが必要です"
       end
