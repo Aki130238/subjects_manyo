@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>user一覧</h1>
+  <p><%= notice %></p>
+  <div class="row">
+    <table class="table">
+      <tr>
+        <th>名前</th>
+        <th>Email</th>
+      </tr>
+  </div>
+  <div class="row">
+    <% @users.each do |user| %>
+      <tr>
+        <td scope="col"><%= user.name %></td>
+        <td scope="col"><%= user.email %></td>
+      </tr>
+    <% end %>
+    </table>
+  </div>
+</div>

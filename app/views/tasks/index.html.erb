@@ -1,10 +1,9 @@
 <div class="container">
   <div class="row">
-    <p><%= notice %></p>
     <%= form_with(model: Task.new, method: :get, url: tasks_path, local: true) do |f| %>
       <div class="form-group row">
-        <%= f.label :title_search, "タイトル検索", class: 'col-sm-2 col-form-label' %>
-        <div class="col-sm-5">
+        <%= f.label :title_search, "タイトル検索", class: 'col-sm-1 col-form-label' %>
+        <div class="col-sm-3">
             <%= f.text_field :title, class: 'form-control', id: 'title-search' %>
         </div>
         <%= f.label :status_search, "状態検索", class: 'col-sm-1 col-form-label' %>
@@ -16,6 +15,9 @@
         <div class="col-sm-2">
             <%= f.submit "絞り込み検索" %>
         </div>
+        <div class="col-sm-2"><%= link_to (button_tag "優先順位でソートする", type: 'button'), tasks_path(sort_priority: "true") %></div>
+        <div class="col-sm-2"><%= link_to (button_tag "終了期限でソートする", type: 'button'), tasks_path(sort_expired: "true") %></div>
+
       </div>
     <% end %>
   </div>
@@ -28,7 +30,7 @@
             <th scope="col">終了期限</th>
             <th scope="col">ステータス</th>
             <th scope="col">内容</th>
-            <th scope="col"></th>
+            <th scope="col">担当者</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>

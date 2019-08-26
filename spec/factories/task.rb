@@ -1,4 +1,9 @@
 FactoryBot.define do
+    # factory :user do
+    #     name { 'iseki' }
+    #     email { 'iseki@dic.com' }
+    #     password { 'aaaaaa' }
+    # end
     # 作成するテストデータの名前を「task」とします
     # （実際に存在するクラス名と一致するテストデータの名前をつければ、そのクラスのテストデータを自動で作成します）
     factory :task do
@@ -6,6 +11,7 @@ FactoryBot.define do
         content { 'Factoryで作ったデフォルトのコンテント１' }
         status { '未着手' }
         expiration_out { '2019-08-14 11:00:00' }
+        # user_id: { user.id }
     end
 
     # 作成するテストデータの名前を「second_task」とします
@@ -15,6 +21,7 @@ FactoryBot.define do
         content { 'Factoryで作ったデフォルトのコンテント２' }
         status { '着手中' }
         expiration_out { '2019-08-14 12:00:00' }
+        # user_id: { user.id }
     end
 
     factory :third_task, class: Task do
@@ -22,5 +29,6 @@ FactoryBot.define do
         content { 'Factoryで作ったデフォルトのコンテント３' }
         status { '着手中' }
         expiration_out { '2019-08-15 12:00:00' }
+        # user_id: { user.id }
     end
 end

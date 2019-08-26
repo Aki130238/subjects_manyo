@@ -1,7 +1,9 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
+    before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
 
     def index
+      if logged_in?
         if params[:task] && params[:task][:search] && params[:task][:title] && params[:task][:status]
           @tasks = Task.page(params[:page]).wheres(params[:task][:title], params[:task][:status])
         elsif params[:task] && params[:task][:search] && params[:task][:title]
@@ -12,12 +14,12 @@ class TasksController < ApplicationController
           @tasks = Task.page(params[:page]).expsorted
         elsif params[:sort_priority]
           @tasks = Task.page(params[:page]).priority_order(params[:direction])
-        elsif
-          @tasks = Task.page(params[:page]).sorted
         else
-          @tasks = Task.page(params[:page])
+          @tasks = current_user.tasks.page(params[:page]).sorted
         end
-        
+      else
+        redirect_to new_session_path
+      end
     end
 
     def new
@@ -26,6 +28,7 @@ class TasksController < ApplicationController
 
     def create
         @task = Task.new(params_task)
+        @task.user_id = current_user.id
         if @task.save
           redirect_to tasks_path, notice: "タスクを作成しました！"
         else
@@ -58,4 +61,12 @@ class TasksController < ApplicationController
     def set_task
         @task = Task.find(params[:id])
     end
+
+    def authenticate_user
+      unless current_user.id == @task.user_id
+        flash[:notice] = "ログインが必要"
+        redirect_to new_session_path, notice:"ログインが必要です"
+      end
+    end
+
 end

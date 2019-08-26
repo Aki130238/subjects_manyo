@@ -10,6 +10,9 @@
   </head>
   
   <body>
+    <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "#{key}") %>
+    <% end %>
     <head>
       <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -19,16 +22,27 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
+              
             </button>
-            <a class="navbar-brand" href="#">タスク管理</a>
+            <% if logged_in? %>
+              <a class="navbar-brand"><%= "#{current_user.name}" %>のタスク管理</a>
+            <% else %>
+              <a class="navbar-brand">タスク管理</a>
+            <% end %>
           </div>
           <div id="gnavi" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               <li><%= link_to"トップ", tasks_path %></li>
-              <li><%= link_to"登録する", new_task_path %></li>
-              <li><%= link_to (button_tag "優先順位でソートする", type: 'button'), tasks_path(sort_priority: "true") %></li>
-              <li><%= link_to (button_tag "終了期限でソートする", type: 'button'), tasks_path(sort_expired: "true") %></li>
-              
+            </ul>
+            <ul class="nav navbar-nav">
+              <% if logged_in? %>
+                <li><%= link_to"タスクを登録する", new_task_path %></li>
+                <li><%= link_to "Profile", user_path(current_user.id) %></li>
+                <li><%= link_to "Logout", session_path(current_user.id), method: :delete %></li>
+              <% else %>
+                <li><%= link_to "Sign up", new_user_path %></li>
+                <li><%= link_to "Login", new_session_path %></li>
+              <% end %>
             </ul>
           </div>
         </div>
