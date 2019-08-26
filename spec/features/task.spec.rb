@@ -1,23 +1,35 @@
 require 'rails_helper'
 
 RSpec.feature "タスク管理機能", type: :feature do
+  let(:user) { FactoryBot.create(:user) }
+  before do
+    # ユーザー作成
+    @user = (:user)
+    # サインイン
+    visit new_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_button 'Log in'
+  end
   background do
-    FactoryBot.create(:task)
-    FactoryBot.create(:second_task)
-    FactoryBot.create(:third_task)
+    FactoryBot.create(:task, user_id: user.id)
+    FactoryBot.create(:second_task, user_id: user.id)
+    FactoryBot.create(:third_task, user_id: user.id)
   end
   
   scenario 'タスク一覧画面に遷移したら、作成済みのタスクが表示される' do
-    Task.create!(title: 'test_task_01', content: 'testtesttest', expiration_out: '2019-08-16 12:00:00')
-    Task.create!(title: 'test_task_02', content: 'samplesample', expiration_out: '2019-08-16 12:00:00')
+    # Task.create!(title: 'test_task_01', content: 'testtesttest', expiration_out: '2019-08-16 12:00:00', user_id: user.id)
+    # Task.create!(title: 'test_task_02', content: 'samplesample', expiration_out: '2019-08-16 12:00:00', user_id: user.id)
 
     # tasks_pathにvisitする（タスク一覧ページに遷移する）
     visit tasks_path
+    #save_and_open_page
 
     # visitした（到着した）expect(page)に（タスク一覧ページに）「testtesttest」「samplesample」という文字列が
     # have_contentされているか？（含まれているか？）ということをexpectする（確認・期待する）テストを書いている
-    expect(page).to have_content 'testtesttest'
-    expect(page).to have_content 'samplesample'
+    # expect(current_path).to have_content 'Factoryで作ったデフォルトのタイトル１'
+    # expect(current_path).to have_content 'Factoryで作ったデフォルトのタイトル２'
+    expect(page).to have_text /.*Factoryで作ったデフォルトのタイトル３.*Factoryで作ったデフォルトのタイトル２.*Factoryで作ったデフォルトのタイトル１.*/
   end
 
   scenario 'タスク登録画面で、必要項目を入力してcreateボタンを押したらデータが保存される' do
@@ -33,8 +45,8 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
 
   scenario '任意のタスク詳細画面に遷移したら、該当タスクの内容が表示されたページに遷移する' do
-    Task.create!(title: 'test_task_06', content: 'testtesttest06', id: '6', expiration_out: '2019-08-16 12:00:00')
-    visit task_path(id: '6')
+    Task.create!(title: 'test_task_06', content: 'testtesttest06', id: user.id, expiration_out: '2019-08-16 12:00:00', user_id: user.id)
+    visit task_path(id: user.id)
     expect(page).to have_content 'test_task_06'
     expect(page).to have_content 'testtesttest06'
   end
@@ -51,9 +63,9 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
 
   scenario '終了期限順に並ぶこと' do
-    Task.create!(title: '終了期限テスト2', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15')
-    Task.create!(title: '終了期限テスト1', content: 'shuryoukigenntitle1', expiration_out: DateTime.now)
-    Task.create!(title: '終了期限テスト3', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
+    Task.create!(title: '終了期限テスト2', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15', user_id: user.id)
+    Task.create!(title: '終了期限テスト1', content: 'shuryoukigenntitle1', expiration_out: DateTime.now, user_id: user.id)
+    Task.create!(title: '終了期限テスト3', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15', user_id: user.id)
     visit tasks_path
     click_link '終了期限でソートする'
     expect(page).to have_text /.*終了期限テスト1.*終了期限テスト2.*終了期限テスト3.*/
@@ -69,9 +81,9 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
 
   scenario '優先順位でソートしたら高中低の順に並ぶ' do
-    Task.create!(title: 'テスト3',priority: '低', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15')
-    Task.create!(title: 'テスト2',priority: '高', content: 'shuryoukigenntitle1', expiration_out: DateTime.now)
-    Task.create!(title: 'テスト1',priority: '中', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15')
+    Task.create!(title: 'テスト3',priority: '低', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15', user_id: user.id)
+    Task.create!(title: 'テスト2',priority: '高', content: 'shuryoukigenntitle1', expiration_out: DateTime.now, user_id: user.id)
+    Task.create!(title: 'テスト1',priority: '中', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15', user_id: user.id)
     visit tasks_path
     click_link '優先順位でソートする'
     expect(page).to have_text /.*テスト2.*テスト1.*テスト3.*/

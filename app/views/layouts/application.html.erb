@@ -36,7 +36,7 @@
             </ul>
             <ul class="nav navbar-nav">
               <% if logged_in? %>
-                <li><%= link_to"登録する", new_task_path %></li>
+                <li><%= link_to"タスクを登録する", new_task_path %></li>
                 <li><%= link_to "Profile", user_path(current_user.id) %></li>
                 <li><%= link_to "Logout", session_path(current_user.id), method: :delete %></li>
               <% else %>

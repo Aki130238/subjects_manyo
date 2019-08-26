@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
 
   def index
+    redirect_to tasks_path
     @users = User.all
   end
 
@@ -53,7 +54,7 @@ class UsersController < ApplicationController
   def authenticate_user
     unless current_user.id == @user.id
       flash[:notice] = "ログインが必要"
-      redirect_to new_session_path, notice:"ログインが必要です"
+      redirect_to tasks_path, notice:"ログインが必要です"
     end
   end
 

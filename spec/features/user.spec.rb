@@ -25,9 +25,10 @@ RSpec.feature "タスク管理機能", type: :feature do
     fill_in 'Password', with: 'aaaaaa'
     click_button 'Log in'
     visit user_path(user2.id)
+    #save_and_open_page
     # expect(page).to_not have_content 'user詳細画面'
     expect(current_path).not_to eq user_path(user2.id)
-    expect(current_path).to eq new_session_path
+    expect(current_path).to eq tasks_path
   end
 
 end
