@@ -1,17 +1,13 @@
-class UsersController < ApplicationController
+class Admin::UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    redirect_to tasks_path
-    @users = User.all
+    @users = User.all.includes(:tasks)
+    # @tasks = Task.select(:id, :titile, :content, :created_at)
   end
 
   def new
     @user = User.new
-    if logged_in?
-      redirect_to tasks_path
-    end
   end
 
   def create
@@ -25,9 +21,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-  end
-
   def edit
   end
 
@@ -35,21 +28,19 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to admin_users_path, notice: "userを編集しました！"
     else
-      render 'edit', notice: "失敗しました！"
+      render 'edit', notice: "失敗しました"
     end
   end
 
   def destroy
+    @user.destroy
+    redirect_to admin_users_path, notice:"userを削除しました！"
   end
 
   private
   
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
-  end
-
-  def new_user
-    @user = User.new
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
   end
 
   def set_user
@@ -59,8 +50,9 @@ class UsersController < ApplicationController
   def authenticate_user
     unless current_user.id == @user.id
       flash[:notice] = "ログインが必要"
-      redirect_to tasks_path, notice:"ログインが必要です"
+      redirect_to users_path, notice:"ログインが必要です"
     end
   end
+
 
 end

@@ -39,6 +39,7 @@
                 <li><%= link_to"タスクを登録する", new_task_path %></li>
                 <li><%= link_to "Profile", user_path(current_user.id) %></li>
                 <li><%= link_to "Logout", session_path(current_user.id), method: :delete %></li>
+                <li><a class="navbar-brand"><%= link_to"管理画面", admin_users_path %></a></li>
               <% else %>
                 <li><%= link_to "Sign up", new_user_path %></li>
                 <li><%= link_to "Login", new_session_path %></li>
