@@ -44,6 +44,7 @@
                 <td scope="col"><%= t.expiration_out.strftime("%Y年%-m月%-d日") %></td>
                 <td scope="col"><%= t.status %></td>
                 <td scope="col"><%= t.content %></td>
+                <td scope="col"><%= t.user.name %></td>
                 <td scope="col"><%= link_to '詳細を見る', task_path(t.id) %></td>
                 <td scope="col"><%= link_to "編集する", edit_task_path(t.id) %></td>
                 <td scope="col"><%= link_to '削除する', task_path(t.id), method: :delete ,data: { confirm: '本当に削除していいですか？' } %></td>
