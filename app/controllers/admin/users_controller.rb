@@ -1,9 +1,13 @@
 class Admin::UsersController < ApplicationController
+  skip_before_action :user_logged_in?, only: [:new, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :admin_user?
+  
 
   def index
     @users = User.all.includes(:tasks)
     # @tasks = Task.select(:id, :titile, :content, :created_at)
+    @user = User.where(id: params[:admin])
   end
 
   def new
@@ -47,12 +51,11 @@ class Admin::UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def authenticate_user
-    unless current_user.id == @user.id
-      flash[:notice] = "ログインが必要"
-      redirect_to users_path, notice:"ログインが必要です"
+  def admin_user?
+    unless current_user.admin?
+      flash[:notice] = "権限がありません"
+      redirect_to tasks_path, notice:"権限が必要です"
     end
   end
-
 
 end
