@@ -1,9 +1,7 @@
 class Admin::UsersController < ApplicationController
-  skip_before_action :user_logged_in?, only: [:new, :create]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :admin_user?
   
-
   def index
     @users = User.all.includes(:tasks)
     # @tasks = Task.select(:id, :titile, :content, :created_at)
