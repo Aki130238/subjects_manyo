@@ -1,4 +1,5 @@
 class Admin::UsersController < ApplicationController
+  before_action :nil_user, only: [:index]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :admin_user?
   
@@ -27,7 +28,14 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
-    if @user.update(user_params)
+    if User.where(admin: true).count == 1 && current_user.id == @user.id
+      @user.update(admin_params)
+      redirect_to admin_users_path, notice: "自分を削除しないで！"
+    elsif User.where(admin: true).count > 1 && current_user.id == @user.id
+      @user.update(user_params)
+      redirect_to admin_users_path, notice: "userを編集しました！"
+    elsif User.where(admin: true).count >= 1
+      @user.update(user_params)
       redirect_to admin_users_path, notice: "userを編集しました！"
     else
       render 'edit', notice: "失敗しました"
@@ -35,14 +43,25 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-    redirect_to admin_users_path, notice:"userを削除しました！"
+    if User.where(admin: true).count == 1 && current_user.id == @user.id
+      redirect_to admin_users_path, notice:"最後のadminはあなたです！"
+    elsif User.where(admin: true).count > 1 && current_user.id == @user.id
+      @user.destroy
+      redirect_to admin_users_path, notice:"userを削除しました"
+    else
+      @user.destroy
+      redirect_to admin_users_path, notice:"userを削除しました"
+    end
   end
 
   private
   
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
+  end
+
+  def admin_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
   def set_user
@@ -53,6 +72,12 @@ class Admin::UsersController < ApplicationController
     unless current_user.admin?
       flash[:notice] = "権限がありません"
       redirect_to tasks_path, notice:"権限が必要です"
+    end
+  end
+
+  def nil_user
+    if current_user == nil
+      redirect_to tasks_path, notice:"ログインが必要です"
     end
   end
 
