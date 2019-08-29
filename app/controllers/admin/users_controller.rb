@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_action :nil_user, only: [:index]
+  # before_action :nil_user, only: [:index]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :admin_user?
   
