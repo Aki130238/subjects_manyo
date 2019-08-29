@@ -5,7 +5,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, length: { maximum: 255 }, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
   validates :password, presence: true, length: { minimum: 6 }, on: :new
   after_destroy :errors_destroy
-  # before_update :errors_update
+  # after_update :errors_update
 
   private
 
@@ -13,8 +13,8 @@ class User < ApplicationRecord
     throw :abort if User.where(admin: true).count == 0
   end
 
-  def errors_update
-    throw :abort if User.where(admin: true).count == 1 && User.find(params[:admin]) == true
-  end
+  # def errors_update
+  #   throw :abort if User.where(admin: true).count == 0
+  # end
 
 end
