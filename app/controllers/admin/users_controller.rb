@@ -30,7 +30,7 @@ class Admin::UsersController < ApplicationController
   def update
     if User.where(admin: true).count == 1 && current_user.id == @user.id
       @user.update(admin_params)
-      redirect_to admin_users_path, notice: "自分を削除しないで！"
+      redirect_to admin_users_path, notice: "最後のadminを削除しないで！"
     elsif User.where(admin: true).count > 1 && current_user.id == @user.id
       @user.update(user_params)
       redirect_to admin_users_path, notice: "userを編集しました！"
