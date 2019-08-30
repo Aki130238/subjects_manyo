@@ -1,19 +1,47 @@
 class TasksController < ApplicationController
     before_action :set_task, only: [:show, :edit, :update, :destroy]
     before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
+    # def index
+    #   if params[:search].nil?
+    #     if title_params && status_params
+    #       @tasks = mytask_page.wheres(title_params, status_params).includes(:user)
+    #     elsif title_params
+    #       @tasks = mytask_page.wheretitle(title_params).includes(:user)
+    #        binding.pry
+    #     elsif status_params
+    #       @tasks = mytask_page.wherestatus(status_params).includes(:user)
+    #       # binding.pry
+    #     elsif label_params
+    #       @tasks = Label.find(params[:label_id]).tasks.includes(:user).where(user_id: current_user.id)
+    #     end
+    #   end
 
+    #   if params[:sort_expired].present?
+    #     @tasks = mytask_page.expsorted.includes(:user)
+    #   elsif params[:sort_priority].present?
+    #     @tasks = mytask_page.priority_order(params[:direction]).includes(:user)
+    #   else
+    #     @tasks = current_user.tasks.page(params[:page]).sorted.includes(:user)
+    #     # redirect_to new_session_path
+    #   end
+    # end
+    
     def index
-      if logged_in?
-        if params[:task] && params[:task][:search] && params[:task][:title] && params[:task][:status]
-          @tasks = Task.page(params[:page]).wheres(params[:task][:title], params[:task][:status]).includes(:user)
-        elsif params[:task] && params[:task][:search] && params[:task][:title]
-          @tasks = Task.page(params[:page]).wheretitle(params[:task][:title]).includes(:user)
-        elsif params[:task] && params[:task][:search] && params[:task][:status]
-          @tasks = Task.page(params[:page]).wherestatus(params[:task][:status]).includes(:user)
-        elsif params[:sort_expired]
-          @tasks = Task.page(params[:page]).expsorted.includes(:user)
-        elsif params[:sort_priority]
-          @tasks = Task.page(params[:page]).priority_order(params[:direction]).includes(:user)
+      if params[:search].nil?
+        if title_params.present? && status_params.present?
+          @tasks = mytask_page.wheres(title_params, status_params).includes(:user)
+        elsif title_params.present?
+          @tasks = mytask_page.wheretitle(title_params).includes(:user)
+        elsif status_params.present?
+          @tasks = mytask_page.wherestatus(status_params).includes(:user)
+        # elsif params[:label].blank?
+        #   redirect_to tasks_path
+        elsif label_params.present?
+          @tasks = Label.find(params[:label]).tasks.includes(:user).where(user_id: current_user.id)
+        elsif params[:sort_expired].present?
+          @tasks = mytask_page.expsorted.includes(:user)
+        elsif params[:sort_priority].present?
+          @tasks = mytask_page.priority_order(params[:direction]).includes(:user)
         else
           @tasks = current_user.tasks.page(params[:page]).sorted.includes(:user)
         end
@@ -55,7 +83,27 @@ class TasksController < ApplicationController
     private
 
     def params_task
-        params.require(:task).permit(:title, :content, :expiration_out, :status, :priority)
+        params.require(:task).permit(:title, :content, :expiration_out, :status, :priority, label_ids: [])
+    end
+
+    def search_params
+      params[:task] && params[:task][:search]
+    end
+
+    def title_params
+      params[:task] && params[:task][:title]
+    end
+
+    def status_params
+      params[:task] && params[:task][:status]
+    end
+
+    def label_params
+      params[:task] && params[:task][:label]
+    end
+
+    def mytask_page
+      current_user.tasks.page(params[:page])
     end
 
     def set_task

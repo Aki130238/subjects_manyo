@@ -1,5 +1,7 @@
 class Task < ApplicationRecord
     belongs_to :user
+    has_many :labellings, dependent: :destroy
+    has_many :labels, through: :labellings
     validates :title, presence: true
     validates :content, presence: true
     scope :sorted, -> { order(created_at: :DESC) }
@@ -7,7 +9,7 @@ class Task < ApplicationRecord
     # scope :priority, -> { order(priority: :DESC) }
     scope :wheretitle, -> (params_t){ where("title LIKE ?", "%#{ (params_t) }%") }
     scope :wherestatus, -> (params_s){ where("status LIKE ?", "%#{ (params_s) }%") }
-    scope :wheres, -> (params_t, params_s){ where("title LIKE ? and status LIKE ?", "%#{ (params_t) }%", "%#{ (params_s) }%") }
+    scope :wheres, -> (params_t, params_s, params_l){ where("title LIKE ? and status LIKE ? and label LIKE ?", "%#{ (params_t) }%", "%#{ (params_s) }%", "%#{ (params_l) }%") }
     def self.priority_order(direction = "DESC")
         order("
             CASE

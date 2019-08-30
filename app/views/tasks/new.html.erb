@@ -10,18 +10,24 @@
     </div>
   <% end %>
   <p><%= notice %></p>
-  <%= form_with(model: @task, local: true) do |form| %>
-      <%= form.label :title %>
-      <%= form.text_field :title %>
-      <%= form.label :priority %>
-      <%= form.select :priority, {高: "高", 中: "中", 低: "低"}, class: 'form-control', include_blank: true, selected: ''  %>
-      <%= form.label :expiration_out %>
-      <%= form.text_field :expiration_out %>
-      <%= form.label :status %>
-      <%= form.select :status, {未着手: "未着手", 着手中: "着手中", 完了: "完了"}, class: 'form-control', include_blank: true, selected: ''  %>
-      <%= form.label :content %>
-      <%= form.text_field :content %>
-      <%= form.submit %>
+  <%= form_with(model: @task, local: true) do |f| %>
+      <%= f.label :title %>
+      <%= f.text_field :title %>
+      <%= f.label :priority %>
+      <%= f.select :priority, {高: "高", 中: "中", 低: "低"}, class: 'form-control', include_blank: true, selected: ''  %>
+      <%= f.label :expiration_out %>
+      <%= f.text_field :expiration_out %>
+      <%= f.label :status %>
+      <%= f.select :status, {未着手: "未着手", 着手中: "着手中", 完了: "完了"}, class: 'form-control', include_blank: true, selected: ''  %>
+      <%= f.label :content %>
+      <%= f.text_field :content %>
+
+      <% Label.all.each do |label| %>
+        <%= f.check_box :label_ids, { multiple: true, checked: @task.labels.find_by(id: label.id).present?, include_hidden: false }, label[:id] %>
+        <label class='badge badge-pill badge-primary'><%= label.name %></label>
+      <% end %>
+  
+      <%= f.submit %>
       <%= link_to (button_tag "戻る", type: 'button'), { controller: :tasks, action: :index } %>
   <% end %>
 </div>

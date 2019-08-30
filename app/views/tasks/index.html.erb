@@ -8,15 +8,21 @@
         </div>
         <%= f.label :status_search, "状態検索", class: 'col-sm-1 col-form-label' %>
         <div class="col-sm-1">
-            <%= f.select :status, {未着手: "未着手", 着手中: "着手中", 完了: "完了"}, class: 'form-control', include_blank: true, selected: '' %>
+            <%= f.select :status, {未着手: "未着手", 着手中: "着手中", 完了: "完了"}, class: 'form-control', include_blank: true, selected: false %>
         </div>
-        <%= f.hidden_field :search, value: 'true' %>
 
+        <%= f.label :label_search, "ラベル検索", class: 'col-sm-1 col-form-label' %>
+        <div class="col-sm-1">
+            <%= f.select :label, Label.all.map{|label| [label.name, label.id] }, class: 'form-control', include_blank: true, selected: '' %>
+        </div>
+
+
+        <%= f.hidden_field :search, value: 'true' %>
         <div class="col-sm-2">
             <%= f.submit "絞り込み検索" %>
         </div>
-        <div class="col-sm-2"><%= link_to (button_tag "優先順位でソートする", type: 'button'), tasks_path(sort_priority: "true") %></div>
-        <div class="col-sm-2"><%= link_to (button_tag "終了期限でソートする", type: 'button'), tasks_path(sort_expired: "true") %></div>
+        <div class="col-sm-2"><%= link_to (button_tag "優先順位でソート", type: 'button'), tasks_path(sort_priority: "true") %></div>
+        <div class="col-sm-2"><%= link_to (button_tag "終了期限でソート", type: 'button'), tasks_path(sort_expired: "true") %></div>
 
       </div>
     <% end %>
