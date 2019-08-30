@@ -1,7 +1,27 @@
 class ApplicationController < ActionController::Base
+  # add_flash_types :success, :info, :warning, :danger
   protect_from_forgery with: :exception
   include SessionsHelper
-  include UsersHelper
+  # before_action :user_logged_in?
+  # # 例外処理
+  # def user_logged_in?
+  #   if session[:user_id]
+  #     begin
+  #       @current_user = User.find_by(id: session[:user_id])
+  #     rescue ActiveRecord::RecordNotFound
+  #       reset_user_session
+  #     end
+  #   end
+  #   return if @current_user
+  #     # @current_userが取得できなかった場合はログイン画面にリダイレクト
+  #     # flash[:referer] = request.fullpath
+  #     flash[:notice] = 'ログインしてください'
+  #     redirect_to new_session_path
+  # end
+  # def reset_user_session
+  #   session[:user_id] = nil
+  #   @current_user = nil
+  # end
   # before_action :basic_authentication
   # #protect_from_forgery with: :exception
 
@@ -13,3 +33,5 @@ class ApplicationController < ActionController::Base
   #   end
   # end
 end
+
+  
