@@ -1,15 +1,14 @@
-FactoryBot.define do
-  
-     factory :label, class: Label do
-        name { 'label1' }
-      end
-    #   factory :second_label, class: Label do
-    #       name { 'label2' }
-    #   end
-    #   factory :third_label, class: Label do
-    #       name { 'label3' }
-    #   end
+FactoryBot.define do  
+    factory :label, class: Label do
+    name { 'label1' }
     end
+    factory :second_label, class: Label do
+        name { 'label2' }
+    end
+    factory :third_label, class: Label do
+        name { 'label3' }
+    end
+end
 
 #   factory :task do
 #     title { 'Factoryで作ったデフォルトのタイトル１' }

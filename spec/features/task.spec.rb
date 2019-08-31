@@ -13,8 +13,8 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
   background do
     FactoryBot.create(:label)
-    # FactoryBot.create(:second_label)
-    # FactoryBot.create(:third_label)
+    FactoryBot.create(:second_label)
+    FactoryBot.create(:third_label)
     FactoryBot.create(:task, user_id: user.id)
     FactoryBot.create(:second_task, user_id: user.id)
     FactoryBot.create(:third_task, user_id: user.id)
