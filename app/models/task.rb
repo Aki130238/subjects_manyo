@@ -9,7 +9,6 @@ class Task < ApplicationRecord
     # scope :priority, -> { order(priority: :DESC) }
     scope :wheretitle, -> (params_t){ where("title LIKE ?", "%#{ (params_t) }%") }
     scope :wherestatus, -> (params_s){ where("status LIKE ?", "%#{ (params_s) }%") }
-    scope :wheres, -> (params_t, params_s, params_l){ where("title LIKE ? and status LIKE ? and label LIKE ?", "%#{ (params_t) }%", "%#{ (params_s) }%", "%#{ (params_l) }%") }
     def self.priority_order(direction = "DESC")
         order("
             CASE
@@ -18,7 +17,6 @@ class Task < ApplicationRecord
               WHEN priority = '低' THEN '3'
             END #{direction}"
             )
-      
     end
     paginates_per 10
 end

@@ -12,6 +12,9 @@ RSpec.feature "タスク管理機能", type: :feature do
     click_button 'Log in'
   end
   background do
+    FactoryBot.create(:label)
+    # FactoryBot.create(:second_label)
+    # FactoryBot.create(:third_label)
     FactoryBot.create(:task, user_id: user.id)
     FactoryBot.create(:second_task, user_id: user.id)
     FactoryBot.create(:third_task, user_id: user.id)
@@ -23,13 +26,13 @@ RSpec.feature "タスク管理機能", type: :feature do
 
     # tasks_pathにvisitする（タスク一覧ページに遷移する）
     visit tasks_path
-    #save_and_open_page
+    # save_and_open_page
 
     # visitした（到着した）expect(page)に（タスク一覧ページに）「testtesttest」「samplesample」という文字列が
     # have_contentされているか？（含まれているか？）ということをexpectする（確認・期待する）テストを書いている
     # expect(current_path).to have_content 'Factoryで作ったデフォルトのタイトル１'
     # expect(current_path).to have_content 'Factoryで作ったデフォルトのタイトル２'
-    expect(page).to have_text /.*Factoryで作ったデフォルトのタイトル３.*Factoryで作ったデフォルトのタイトル２.*Factoryで作ったデフォルトのタイトル１.*/
+    expect(page).to have_text /.*Factoryで作ったデフォルトのタイトル１.*Factoryで作ったデフォルトのタイトル２.*Factoryで作ったデフォルトのタイトル３.*/
   end
 
   scenario 'タスク登録画面で、必要項目を入力してcreateボタンを押したらデータが保存される' do
@@ -59,7 +62,7 @@ RSpec.feature "タスク管理機能", type: :feature do
     # タスクが作成日時の降順に並んでいるかのテスト
     # save_and_open_page この部分でViewを確認
     visit tasks_path
-    expect(page).to have_text /.+タイトル２.+タイトル１.+/
+    expect(page).to have_text /.+タイトル２.+タイトル３.+/
   end
 
   scenario '終了期限順に並ぶこと' do
@@ -67,9 +70,9 @@ RSpec.feature "タスク管理機能", type: :feature do
     Task.create!(title: '終了期限テスト1', content: 'shuryoukigenntitle1', expiration_out: DateTime.now, user_id: user.id)
     Task.create!(title: '終了期限テスト3', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15', user_id: user.id)
     visit tasks_path
-    click_link '終了期限でソートする'
+    click_link '終了期限でソート'
+    
     expect(page).to have_text /.*終了期限テスト1.*終了期限テスト2.*終了期限テスト3.*/
-    #save_and_open_page
     end
 
   scenario 'タイトル検索で任意の文字が含まれるタスクだけ表示される' do
@@ -81,12 +84,18 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
 
   scenario '優先順位でソートしたら高中低の順に並ぶ' do
-    Task.create!(title: 'テスト3',priority: '低', content: 'shuryoukigenntitle2', expiration_out: '2019-08-15', user_id: user.id)
-    Task.create!(title: 'テスト2',priority: '高', content: 'shuryoukigenntitle1', expiration_out: DateTime.now, user_id: user.id)
-    Task.create!(title: 'テスト1',priority: '中', content: 'shuryoukigenntitle3', expiration_out: '2019-08-15', user_id: user.id)
     visit tasks_path
-    click_link '優先順位でソートする'
-    expect(page).to have_text /.*テスト2.*テスト1.*テスト3.*/
+    click_link '優先順位でソート'
+    expect(page).to have_text /.*タイトル２.*タイトル３.*タイトル１.*/
   end
+
+  # scenario 'ラベルをもつタスクをラベルで絞り込む' do
+  #   visit tasks_path
+  #   select "label1", from: 'label_id'
+  #   save_and_open_page
+  #   click_button '絞り込み検索'
+  #   save_and_open_page
+  #   expect(page).to have_text /.*テスト1.*テスト3.*/
+  # end
 
 end

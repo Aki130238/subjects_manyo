@@ -13,7 +13,6 @@ RSpec.feature "タスク管理機能", type: :feature do
   end
 
   background do
-    
     FactoryBot.create(:second_user)
     FactoryBot.create(:third_user)
   end
