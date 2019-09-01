@@ -4,5 +4,9 @@
   <p>タイトル: <%= @task.title %></p>
   <p>内容: <%= @task.content %></p>
   <p>終了期限: <%= @task.expiration_out %></p>
+    <% @task.label_ids.each do |label_id| %>
+      <label class='badge badge-pill badge-primary'><%= Label.find_by(id: label_id).name %></label>
+    <% end %>
+
   <%= link_to"戻る", tasks_path %>
 </div>
