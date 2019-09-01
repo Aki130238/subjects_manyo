@@ -15,9 +15,12 @@ RSpec.feature "タスク管理機能", type: :feature do
     FactoryBot.create(:label)
     FactoryBot.create(:second_label)
     FactoryBot.create(:third_label)
-    FactoryBot.create(:task, user_id: user.id)
+    FactoryBot.create(:task, user_id: user.id,)
     FactoryBot.create(:second_task, user_id: user.id)
     FactoryBot.create(:third_task, user_id: user.id)
+    FactoryBot.create(:labellings)
+    FactoryBot.create(:second_labellings)
+    FactoryBot.create(:third_labellings)
   end
   
   scenario 'タスク一覧画面に遷移したら、作成済みのタスクが表示される' do
@@ -89,13 +92,11 @@ RSpec.feature "タスク管理機能", type: :feature do
     expect(page).to have_text /.*タイトル２.*タイトル３.*タイトル１.*/
   end
 
-  # scenario 'ラベルをもつタスクをラベルで絞り込む' do
-  #   visit tasks_path
-  #   select "label1", from: 'label_id'
-  #   save_and_open_page
-  #   click_button '絞り込み検索'
-  #   save_and_open_page
-  #   expect(page).to have_text /.*テスト1.*テスト3.*/
-  # end
+  scenario 'ラベルをもつタスクをラベルで絞り込む' do
+    visit tasks_path
+    select "label1", from: 'label'
+    click_button '絞り込み検索'
+    expect(page).to have_text /.*タイトル１.*タイトル３.*/
+  end
 
 end

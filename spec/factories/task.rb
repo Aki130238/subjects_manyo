@@ -32,5 +32,4 @@ FactoryBot.define do
         # user_id: { user.id }
     end
 
-
 end
