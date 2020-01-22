@@ -3,33 +3,34 @@ class TasksController < ApplicationController
     before_action :authenticate_user, only: [:show, :edit, :update, :destroy]
     
     def index
-      if params[:search].nil?
-        if params[:sort_priority].present?
-          @tasks = current_user.tasks.priority_order(params[:direction])
-        elsif params[:sort_expired].present?
-          @tasks = current_user.tasks.expsorted
-        else
-          @tasks = current_user.tasks
-        end
-      else
-        if title_params.present? && status_params.blank? && label_params.blank?
-          @tasks = current_user.tasks.wheretitle(title_params)
-        elsif title_params.present? && status_params.present? && label_params.blank?
-          @tasks = current_user.tasks.wheretitle(title_params).wherestatus(status_params)
-        elsif title_params.present? && status_params.present? && label_params.present?
-          @tasks = Label.find(params[:label]).tasks.wheretitle(title_params).wherestatus(status_params).includes(:user).where(user_id: current_user.id)
-        elsif title_params.present? && status_params.blank? && label_params.present?
-          @tasks = Label.find(params[:label]).tasks.wheretitle(title_params).includes(:user).where(user_id: current_user.id)
-        elsif title_params.blank? && status_params.present? && label_params.blank?
-          @tasks = current_user.tasks.wherestatus(status_params)
-        elsif title_params.blank? && status_params.present? && label_params.present?
-          @tasks = Label.find(params[:label]).tasks.wherestatus(status_params).includes(:user).where(user_id: current_user.id)
-        elsif title_params.blank? && status_params.blank? && label_params.present?
-          @tasks = Label.find(params[:label]).tasks.includes(:user).where(user_id: current_user.id)
-        else
-          @tasks = current_user.tasks
-        end
-      end
+      # if params[:search].nil?
+      #   if params[:sort_priority].present?
+      #     @tasks = current_user.tasks.priority_order(params[:direction])
+      #   elsif params[:sort_expired].present?
+      #     @tasks = current_user.tasks.expsorted
+      #   else
+      #     @tasks = current_user.tasks
+      #   end
+      # else
+      #   if title_params.present? && status_params.blank? && label_params.blank?
+      #     @tasks = current_user.tasks.wheretitle(title_params)
+      #   elsif title_params.present? && status_params.present? && label_params.blank?
+      #     @tasks = current_user.tasks.wheretitle(title_params).wherestatus(status_params)
+      #   elsif title_params.present? && status_params.present? && label_params.present?
+      #     @tasks = Label.find(params[:label]).tasks.wheretitle(title_params).wherestatus(status_params).includes(:user).where(user_id: current_user.id)
+      #   elsif title_params.present? && status_params.blank? && label_params.present?
+      #     @tasks = Label.find(params[:label]).tasks.wheretitle(title_params).includes(:user).where(user_id: current_user.id)
+      #   elsif title_params.blank? && status_params.present? && label_params.blank?
+      #     @tasks = current_user.tasks.wherestatus(status_params)
+      #   elsif title_params.blank? && status_params.present? && label_params.present?
+      #     @tasks = Label.find(params[:label]).tasks.wherestatus(status_params).includes(:user).where(user_id: current_user.id)
+      #   elsif title_params.blank? && status_params.blank? && label_params.present?
+      #     @tasks = Label.find(params[:label]).tasks.includes(:user).where(user_id: current_user.id)
+      #   else
+      #     @tasks = current_user.tasks
+      #   end
+      # end
+      @tasks = Task.all
     end
 
     def new
